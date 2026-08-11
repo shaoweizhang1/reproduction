@@ -29,6 +29,16 @@ the best-on-dev checkpoint on T3 to T6.
 <img src="deepproblog_demo/figs/t2.png" width="49%">
 </p>
 
+The curves are evaluated on 500 test examples every thousand iterations,
+cheap enough to run sixty times; the table is the full test set at the end
+(`--test_subset` sets the first, the `#Accuracy` line reports the second).
+That is why a curve can land a couple of points off its table entry.
+
+The right-hand axis is accuracy. The paper's Figure 3 labels the same axis
+*Accuracy* and then calls it "F1 score on the test set" in the caption, so
+every log here carries both `#F1` and `#Accuracy` and the figures plot the
+one the axis asks for.
+
 ### Table 1a — the grid
 
 T3 and T4 are a grid, not a number: each cell is a model trained on inputs
@@ -61,13 +71,19 @@ Seconds until 100% accurate on test length 8:
 | | train 2 | 3 | 4 | 5 | 6 |
 |---|---|---|---|---|---|
 | ∂4 on GPU (paper) | 42 | 160 | – | – | – |
+| ∂4 on CPU (paper) | 61 | 390 | – | – | – |
 | DeepProbLog on CPU (paper) | 11 | 14 | 32 | 114 | 245 |
 | **DeepProbLog on CPU (mine)** | **9** | **19** | **41** | **139** | **1156** |
+
+Four of the five land within a factor of about 1.3 of the published
+numbers. The last is 4.7× off; the machine was heavily loaded and the work
+is single-threaded CPU, so read the trend rather than the number.
 
 ### T6 does not reproduce
 
 The paper reports 100% after 5 epochs; this gets 81.2%, with the colour
-network below chance. The reasons are upstream of the code:
+network at 18.8%, below chance for three classes. The reasons are upstream
+of the code:
 
 - **No released implementation.** The repository's nearest example is a
   different task — two coins in one image, no learnable probabilistic
@@ -80,19 +96,31 @@ network below chance. The reasons are upstream of the code:
   `coin_ball_data.py` picks its own, so success means "training found the
   numbers I chose".
 
+<p align="center">
+<img src="deepproblog_demo/figs/t6.png" width="70%">
+</p>
+
 ## Three things the paper does not mention
 
 **Training is not monotone, and it is not overfitting.** T3–T6 all reach a
 good solution and then get worse if training continues. The clearest case
 is in the logs: on T5 the best-on-dev checkpoint scores 97.5% on test and
 the model the last epoch left behind scores 74.0% — one run, 23 points
-apart. That is why every task here stops on a dev target instead of
-burning a fixed epoch budget. The cause is the probabilistic parameters
-collapsing onto 0 and 1: a parameter at zero switches off a branch of the
-program, and any network whose only gradient came through that branch
-stops receiving one. Re-normalising the AD does not prevent it — 0 and 1
-is a normalised distribution. Every task here therefore selects its
-checkpoint on a dev set.
+apart.
+
+<p align="center">
+<img src="deepproblog_demo/figs/t5.png" width="70%">
+</p>
+
+Dev accuracy peaks at 98% on iteration 570 and bounces between 90 and 97
+for three hundred more. At 900 the training loss goes from a few tenths to
+two or three and never comes back, and accuracy follows it down to 76.
+The cause is the probabilistic parameters collapsing onto 0 and 1: a
+parameter at zero switches off a branch of the program, and any network
+whose only gradient came through that branch stops receiving one.
+Re-normalising the AD does not prevent it — 0 and 1 is a normalised
+distribution. Every task here therefore selects its checkpoint on a dev
+set instead of burning a fixed epoch budget.
 
 **It is CPU-bound, and the GPU makes it slower.** A T1 iteration spends
 almost all its time grounding, compiling and evaluating a circuit, none of
@@ -108,6 +136,32 @@ keeping T1's evaluation cadence on T2 would have spent longer evaluating
 than training. Batching does not help — the paper says so itself:
 "We do not perform actual mini-batching, but instead use gradient
 accumulation."
+
+## Reconstructions and deviations
+
+Three places where this repository does not simply run official code.
+
+**T1's concatenation CNN was rebuilt.** The library ships only the
+shared-encoder baseline; the CNN the paper plots — one set of
+convolutional layers over both images at once — is not there. The two
+images are stacked as channels, which keeps the 16×4×4 feature map the
+described architecture implies; laying them side by side would give
+16×4×11 and a first linear layer of 84,600 parameters, nearly twice the
+whole network. The appendix's "44k parameters" is the digit network
+(1 channel, 10 outputs, 44,426 here); this baseline is the same trunk with
+2 channels and 19 outputs, 45,341.
+
+**T4 uses lr 0.1, not the official 1.0.** The official sorting script's
+1.0 never solved the task over three runs here; 0.1 solved it in all
+three.
+
+**T6 runs 20 epochs, not the paper's 5.** Nothing here is at 100% by 5,
+and dev accuracy is flat well before 20.
+
+T1 and T2 also run 60000 and 30000 iterations rather than the paper's
+30000: the concat baseline and DeepProbLog were both still climbing at
+30000. The separate baseline was not — it ends slightly lower at 60000
+than at 30000. Those shorter runs are kept in `log/archive/`.
 
 ## Layout
 
