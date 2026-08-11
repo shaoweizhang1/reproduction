@@ -1,0 +1,8 @@
+#Best dev accuracy	1.0
+#Final-model test accuracy	1.0
+#Time to 100%	41.41478633880615
+#F1	1.0
+#Accuracy	1.0
+i,Accuracy,Test accuracy,time,loss,ground_time,compile_time,eval_time
+1,0.0,0.0,,,,,
+50,1.0,1.0,36.882044553756714,0.24571332787724665,0.05040352642536163,0.005995000004768372,0.017876944839954376

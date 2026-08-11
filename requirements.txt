@@ -1,0 +1,5 @@
+torch>=2.0
+torchvision
+deepproblog @ git+https://github.com/ML-KULeuven/deepproblog.git
+matplotlib
+tqdm
