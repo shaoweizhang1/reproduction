@@ -1,7 +1,8 @@
 % Coin-ball (T6), variant V2: no learnable coin bias at all.
 %
 % A control, to localise the failure in coin_ball.pl. The urn ratios are
-% learned exactly as in Listing 6; only the coin bias is dropped, so the
+% learned exactly as in the paper's Listing 6; only the coin bias is
+% dropped, so the
 % side comes straight from the network. If the urn ratios come out right
 % here but not with a coin bias in play, the fault is in how the bias is
 % tied to the network, not in the rest of the program.

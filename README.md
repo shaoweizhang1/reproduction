@@ -36,10 +36,10 @@ That is why a curve can land a couple of points off its table entry.
 
 The right-hand axis is accuracy. The paper's Figure 3 labels the same axis
 *Accuracy* and then calls it "F1 score on the test set" in the caption, so
-every log here carries both `#F1` and `#Accuracy` and the figures plot the
-one the axis asks for.
+every log here carries both `#F1` and `#Accuracy`, and the figures above
+plot the one the axis asks for.
 
-### Table 1a — the grid
+### The paper's Table 1a — the grid
 
 T3 and T4 are a grid, not a number: each cell is a model trained on inputs
 of one length and tested on a longer one. Sorting, accuracy %:
@@ -64,7 +64,7 @@ Bošnjak et al. (2017); `–` is where that paper reports nothing. The 97.7
 cell hit 100.0 on an earlier run of the same configuration, so it is seed
 variance.
 
-### Table 1b — wall clock
+### The paper's Table 1b — wall clock
 
 Seconds until 100% accurate on test length 8:
 
@@ -88,8 +88,9 @@ of the code:
 - **No released implementation.** The repository's nearest example is a
   different task — two coins in one image, no learnable probabilistic
   parameters. Program, data and runner are all reconstructed here.
-- **Listing 6 does not run as printed.** It needs repairs before ProbLog
-  accepts it; `src/experiments/t6/coin_ball.pl` documents each one.
+- **Listing 6 of the paper does not run as printed.** It needs repairs
+  before ProbLog accepts it; `src/experiments/t6/coin_ball.pl` documents
+  each one.
 - **The data does not exist, and the missing part is the answer.** The
   paper never states the urn ratios or the coin bias its training set is
   drawn from — exactly the quantity the experiment claims to recover.

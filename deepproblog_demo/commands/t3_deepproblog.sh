@@ -10,8 +10,9 @@ export MKL_NUM_THREADS=1
 TRAIN_LENGTHS="2 4 8"
 TEST_LENGTHS="8 64"
 
-# One run per cell of Table 1a. --stop_at_accuracy replaces the official
-# fixed 40 epochs, which stops while dev accuracy is still climbing.
+# One run per cell of the paper's Table 1a. --stop_at_accuracy replaces
+# the official fixed 40 epochs, which stops while dev accuracy is still
+# climbing.
 for L in $TRAIN_LENGTHS; do
   for M in $TEST_LENGTHS; do
     echo "=== T3 Add | training length $L | test length $M ==="

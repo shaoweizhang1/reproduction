@@ -10,9 +10,10 @@ export MKL_NUM_THREADS=1
 TRAIN_LENGTHS="2 3 4 5 6"
 TEST_LENGTHS="8 64"
 
-# One run per cell of Table 1a. lr: official is 1.0, which never solved the
-# task over three runs; 0.1 solved it in all three. --track_test produces
-# Table 1b, so only test length 8 needs it.
+# One run per cell of the paper's Table 1a. lr: official is 1.0, which
+# never solved the task over three runs; 0.1 solved it in all three.
+# --track_test produces our version of the paper's Table 1b, so only test
+# length 8 needs it.
 for L in $TRAIN_LENGTHS; do
   for M in $TEST_LENGTHS; do
     echo "=== T4 Sort | training length $L | test length $M ==="

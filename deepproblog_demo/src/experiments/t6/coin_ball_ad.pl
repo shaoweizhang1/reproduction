@@ -1,5 +1,5 @@
 % Coin-ball (T6), variant V3: the coin bias written as an annotated
-% disjunction, matching how Listing 6 writes the urns.
+% disjunction, matching how the paper's Listing 6 writes the urns.
 %
 % Listing 6 declares the urn compositions as ADs -- "t(0.5)::col(1,red);
 % t(0.5)::col(1,blue)." -- but the coin bias as a lone fact, "t(0.5)::
