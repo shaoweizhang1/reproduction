@@ -5,7 +5,7 @@ Probabilistic Logic Programming*, NeurIPS 2018
 ([paper](https://arxiv.org/abs/1805.10872)), on top of the official
 [ML-KULeuven/deepproblog](https://github.com/ML-KULeuven/deepproblog)
 library installed as an ordinary pip dependency — nothing vendored.
-Write-up: [Reading notes: DeepProbLog](https://shaoweizhang1.github.io/posts/deepproblog-neural-probabilistic-logic-programming).
+Write-up: [DeepProbLog, Neural Probabilistic Logic Programming](https://shaoweizhang1.github.io/reading-notes/deepproblog-neural-probabilistic-logic-programming).
 
 ## Results
 
