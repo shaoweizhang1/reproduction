@@ -1,0 +1,5 @@
+# Upstream checkout, bytecode and experiment outputs.
+upstream/
+__pycache__/
+*.py[cod]
+log/

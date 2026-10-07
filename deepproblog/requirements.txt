@@ -1,0 +1,10 @@
+# Versions from the experiment environment (Python 3.12).
+# SWI-Prolog is a system dependency; see README.md.
+deepproblog @ git+https://github.com/ML-KULeuven/deepproblog.git@879bda3e93293cabf37541a6d82212c3ead43f2c
+problog==2.2.10
+pyswip==0.3.3
+torch==2.13.0
+torchvision==0.28.0
+numpy==2.5.2
+matplotlib==3.11.1
+tqdm==4.70.0

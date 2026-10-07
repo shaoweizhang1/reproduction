@@ -1,0 +1,89 @@
+diff --git a/deepstochlog/logic.py b/deepstochlog/logic.py
+index 2a17967..910a601 100644
+--- a/deepstochlog/logic.py
++++ b/deepstochlog/logic.py
+@@ -1,5 +1,5 @@
+ from abc import ABCMeta, ABC
+-from collections import Sized
++from collections.abc import Sized
+ from typing import Callable, Iterable
+ from deepstochlog.networkevaluation import RequiredEvaluation
+ from deepstochlog.term import Term
+diff --git a/deepstochlog/trainer.py b/deepstochlog/trainer.py
+index cfb324a..5c02f72 100644
+--- a/deepstochlog/trainer.py
++++ b/deepstochlog/trainer.py
+@@ -112,7 +112,7 @@ class PandasLogger(DeepStochLogLogger):
+             [float(el) for el in accuracy_tester.split("\t") if len(el.strip()) > 0]
+         )
+         series = pd.Series(to_append, index=self.df.columns)
+-        self.df = self.df.append(series, ignore_index=True)
++        self.df = pd.concat([self.df, series.to_frame().T], ignore_index=True)
+ 
+     def get_last_result(self):
+         return self.df.iloc[[-1]]
+diff --git a/examples/addition/addition_timing.py b/examples/addition/addition_timing.py
+index e1b1b08..b79f303 100644
+--- a/examples/addition/addition_timing.py
++++ b/examples/addition/addition_timing.py
+@@ -126,7 +126,7 @@ def run(
+ 
+     # Load the model "addition.pl" with this MNIST network
+     query = Term(
+-        "addition", Term("_"), Term(str(digit_length)), argument_lists[digit_length]
++        "multi_addition", Term("_"), Term(str(digit_length)), argument_lists[digit_length]
+     )
+     networks = NetworkStore(mnist_classifier)
+ 
+@@ -159,7 +159,7 @@ def run(
+     i = 0
+     for batch in train_dataloader:
+         i+=1
+-        if i==100: break
++        if i > 100: break
+         # Cross-Entropy (CE) loss
+         before = time()
+         probabilities = model.predict_sum_product(batch)
+diff --git a/examples/mathexpression/mathexpression.py b/examples/mathexpression/mathexpression.py
+index faf9b79..9d740c8 100644
+--- a/examples/mathexpression/mathexpression.py
++++ b/examples/mathexpression/mathexpression.py
+@@ -39,9 +39,10 @@ def create_expression_sentence_query(
+ 
+ 
+ class GreedyDumbEvaluation:
+-    def __init__(self, valid_data, test_data, store):
++    def __init__(self, valid_data, test_data, store, device):
+ 
+         self.valid_data = valid_data
++        self.device = device
+         self.test_data = test_data
+         self.store = store
+         self.header = "Valid acc\tTest acc\t"
+@@ -57,13 +58,13 @@ class GreedyDumbEvaluation:
+             for i, (id, tensor) in enumerate(term.context._context.items()):
+                 if i % 2 == 0:
+                     n = torch.argmax(
+-                        number.neural_model(tensor.unsqueeze(dim=0))
+-                    ).numpy()
++                        number.neural_model(tensor.unsqueeze(dim=0).to(self.device))
++                    ).cpu().numpy()
+                     res = res + str(n)
+                 else:
+                     o = torch.argmax(
+-                        operator.neural_model(tensor.unsqueeze(dim=0))
+-                    ).numpy()
++                        operator.neural_model(tensor.unsqueeze(dim=0).to(self.device))
++                    ).cpu().numpy()
+                     res = res + operators[o]
+             try:
+                 res = eval(res)
+@@ -227,7 +228,7 @@ def run(
+         verbose=verbose,
+     )
+     # calculate_model_accuracy = create_model_accuracy_calculator(model, test_dataloader, start_time)
+-    g = GreedyDumbEvaluation(valid_data, test_data, networks)
++    g = GreedyDumbEvaluation(valid_data, test_data, networks, device)
+     calculate_model_accuracy = g.header, g
+ 
+     # Train the DeepStochLog model

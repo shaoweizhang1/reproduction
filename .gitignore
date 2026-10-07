@@ -1,5 +1,6 @@
-# Downloaded automatically on first run (MNIST via torchvision).
-deepproblog_demo/data/MNIST/
+deepproblog/data/MNIST/
 
 __pycache__/
 *.pyc
+
+.DS_Store

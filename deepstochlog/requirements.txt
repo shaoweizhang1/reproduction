@@ -1,0 +1,10 @@
+# Python 3.12
+# SWI-Prolog and Git are system dependencies; see README.md.
+torch==2.13.0
+torchvision==0.28.0
+numpy==2.5.2
+pandas==3.0.5
+scipy==1.18.1
+pyparsing==3.3.2
+dgl==2.1.0
+torchdata==0.7.1
