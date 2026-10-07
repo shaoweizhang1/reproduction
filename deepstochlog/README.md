@@ -116,7 +116,7 @@ With the five seeds running side by side on CPU, length 7 went from about 56 h
 to under 5 h.
 
 **Reruns are not exact.** Running T2 again with the same seed gives a different
-result: at length 1, seed 0 gave between 87.0% and 90.0% over six runs, with or
+result: at length 1, seed 0 gave between 87.5% and 90.0% over six runs, with or
 without a fixed `PYTHONHASHSEED`.
 
 ## Speedups and fixes
