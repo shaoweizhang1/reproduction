@@ -103,8 +103,7 @@ changes causes this was not isolated.
 
 **T2 is faster on CPU than on GPU.** Almost all of T2's time goes to the proof
 trees, not the networks. The engine computes every node as a separate operation
-on a single number, and a tree has several thousand nodes per example at length
-7. Training one seed took:
+on a single number, and the trees are large. Training one seed took:
 
 | Length | GPU (s) | CPU (s) | Speedup |
 |---|---:|---:|---:|
